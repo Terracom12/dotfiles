@@ -175,8 +175,7 @@ require('lazy').setup({
     -- See `:help indent_blankline.txt`
     config = function()
             require("ibl").setup {
-                char = '┊',
-                show_trailing_blankline_indent = false,
+                indent = { char = "|" },
             }
     end,
   },
