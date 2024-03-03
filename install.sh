@@ -1,3 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
-echo "Problems for future me..."
+# Just copy everything from here to ~/
+cp -r .config ~
