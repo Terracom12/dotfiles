@@ -259,6 +259,9 @@ vim.o.smartcase = true
 -- Keep signcolumn on by default
 vim.wo.signcolumn = 'yes'
 
+-- Set column limit marker at col=120
+vim.o.colorcolumn = '120'
+
 -- Decrease update time
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
