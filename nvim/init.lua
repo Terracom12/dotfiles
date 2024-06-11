@@ -108,6 +108,11 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
+  
+  {
+    -- Auto-formatting
+    --'mhartington/formatter.nvim'
+  },
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
@@ -216,7 +221,9 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
+
+  require 'kickstart.plugins.autoformat',
+
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -506,6 +513,14 @@ cmp.setup {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
+  },
+  performance = {
+    max_view_entries = 8,
+    debounce = 100,
+    throttle = 100,
+    async_budget = 100,
+    fetching_timeout = 100,
+    confirm_resolve_timeout = 100
   },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
