@@ -1,0 +1,10 @@
+[user]
+	name = Matthew Reese
+	email = awesomepop012@hotmail.com
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[alias]
+	co = checkout
+	br = branch
+	st = status

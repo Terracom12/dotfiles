@@ -1,0 +1,16 @@
+import = [
+  "~/.config/alacritty/catppuccin-mocha.toml"
+]
+#shell = { program = "/bin/bash", args = ["-l", "-c", "tmux attach || tmux"] }
+
+[window]
+decorations = "None"
+opacity = 0.85
+startup_mode = "Fullscreen"
+
+[font]
+normal = { family = "JetBrainsMonoNL NF", style = "Regular" }
+size = 12.5
+
+[cursor]
+style = "Beam"
