@@ -1,10 +1,21 @@
 #!/bin/bash
 
-#sudo apt-get install -y $(cat pkgs/apt.list | tr '\n' ' ')
+d=$(pwd)
+
+get_list () {
+	cat $d/pkgs/$1.list | tr '\n' ' ' | xargs echo
+}
+
+sudo apt-get install -y $(get_list apt)
 
 mkdir ~/Install
-for pkg in $(find $(pwd)/pkgs/custom -name \*\.sh); do
-	cd ~/Install
-	echo Installing $pkg
-	. $pkg
+cd ~/Install
+
+# Set up asdf (meta-package manager)
+git clone https://github.com/asdf-vm/asdf.git --branch v0.14.1
+. ~/Install/asdf/asdf.sh
+
+for plug in $(get_list asdf); do
+	asdf plugin add $plug
 done
+
