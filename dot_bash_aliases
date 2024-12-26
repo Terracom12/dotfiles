@@ -27,7 +27,7 @@ ifcepkgc() {
 # Program aliases
 alias bat='batcat'
 alias lg='lazygit'
-alias code='code-insiders'
+# alias code='code-insiders'
 
 if [[ $TERM == "xterm-kitty" ]]; then
   alias ssh='kitten ssh'
