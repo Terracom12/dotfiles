@@ -1,6 +1,7 @@
 [user]
 	name = Matthew Reese
 	email = awesomepop012@hotmail.com
+	signingkey = awesomepop012@hotmail.com
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
@@ -8,3 +9,5 @@
 	co = checkout
 	br = branch
 	st = status
+[commit]
+	gpgSign = true
