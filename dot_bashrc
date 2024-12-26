@@ -116,13 +116,14 @@ if ! shopt -oq posix; then
     fi
 fi
 source /opt/ros/humble/setup.bash
-eval "$(thefuck --alias)"
 
-export PATH=$PATH:"/home/matt/.cargo/bin"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 
 eval "$(gh completion -s bash)"
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
+eval "$(fzf --bash)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
@@ -134,7 +135,6 @@ export PATH=$PATH:$HOME/Installs/scripts
 export PATH=$PATH:/usr/local/texlive/2024/bin/x86_64-linux
 . "$HOME/.cargo/env"
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # pnpm
 export PNPM_HOME="/home/matt/.local/share/pnpm"

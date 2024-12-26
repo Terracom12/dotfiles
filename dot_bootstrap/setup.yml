@@ -1,0 +1,171 @@
+---
+- name: Machine Setup
+  hosts: localhost
+  become: true
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Get my user
+      ansible.builtin.set_fact:
+        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+
+    - name: Install basic packages
+      ansible.builtin.apt:
+        name:
+          - git
+          - gcc
+          - clang
+          - make
+          - cmake
+          - vim
+          - htop
+          - gh
+          - gnome-tweaks
+          - ripgrep
+          - fd-find
+          - firefox
+          - pkg-config
+          - libfreetype6-dev
+          - libfontconfig1-dev
+          - libxcb-xfixes0-dev
+          - libxkbcommon-dev
+          - python3
+        state: present
+
+    - name: Add the official Neovim PPA
+      ansible.builtin.apt_repository:
+        repo: ppa:neovim-ppa/unstable
+        state: present
+
+    - name: Install Neovim
+      ansible.builtin.apt:
+        name: neovim=0.10.*
+        state: present
+
+
+    - name: Import Microsoft GPG Key
+      ansible.builtin.apt_key:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+
+    - name: Add Visual Studio Code Repo
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
+        state: present
+
+    - name: Install VS Code and VS Code Insiders
+      ansible.builtin.apt:
+        name:
+          - code
+          - code-insiders
+        state: present
+
+    - name: Import Docker GPG Key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Get Ubuntu codename
+      ansible.builtin.shell:
+        cmd: lsb_release -c | awk '{print $2}'
+      register: ubuntu_codename
+      changed_when: false
+
+    - name: Add Docker repo
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_codename.stdout }} stable
+        state: present
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+
+    - name: Add Docker group
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: "{{ remote_regular_user }}"
+        groups: docker
+        append: true
+
+    - name: Ensure fonts directory
+      ansible.builtin.file:
+        path: "~{{ remote_regular_user }}/.fonts"
+        state: directory
+        mode: "0755"
+        owner: "{{ remote_regular_user }}"
+
+    - name: Check if Jetbrains Mono exists
+      ansible.builtin.shell: "ls ~{{ remote_regular_user }}/.fonts/JetBrainsMonoNerd*FontMono*"
+      register: jetbrains_mono_exists
+      ignore_errors: true
+      changed_when: false
+
+    - name: Download Jetbrains mono
+      when: jetbrains_mono_exists is failed
+      ansible.builtin.unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip
+        dest: "~{{ remote_regular_user }}/.fonts/"
+        remote_src: true
+        mode: "0755"
+        owner: "{{ remote_regular_user }}"
+
+- name: User setup
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Install rustup and cargo
+      ansible.builtin.shell:
+        cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        creates: ~{{ ansible_user_id }}/.cargo/bin/cargo
+        warn: false
+
+    - name: Ensure Rust and Cargo binaries are in PATH
+      ansible.builtin.lineinfile:
+        path: ~{{ ansible_user_id }}/.bashrc
+        line: 'export PATH="$HOME/.cargo/bin:$PATH"'
+        state: present
+
+    - name: Install Alacritty, Zoxide, and Starship
+      ansible.builtin.command:
+        cmd: ~{{ ansible_user_id }}/.cargo/bin/cargo install alacritty zoxide starship
+        creates: 
+          - ~{{ ansible_user_id }}/.cargo/bin/alacritty
+          - ~{{ ansible_user_id }}/.cargo/bin/zoxide
+          - ~{{ ansible_user_id }}/.cargo/bin/starship
+
+
+    - name: Creates HOME/bin
+      ansible.builtin.file:
+        path: ~{{ ansible_user_id }}/bin
+        state: directory
+
+    - name: Add HOME/bin to PATH
+      ansible.builtin.lineinfile:
+        path: ~{{ ansible_user_id }}/.bashrc
+        line: 'export PATH="$HOME/bin:$PATH"'
+        state: present
+
+    - name: Install fzf
+      ansible.builtin.unarchive:
+        src: https://github.com/junegunn/fzf/releases/download/v0.57.0/fzf-0.57.0-linux_amd64.tar.gz
+        dest: ~{{ ansible_user_id }}/bin
+        remote_src: yes
+
+    - name: Install lazygit
+      ansible.builtin.unarchive:
+        src: https://github.com/jesseduffield/lazygit/releases/download/v0.44.1/lazygit_0.44.1_Linux_x86_64.tar.gz
+        dest: ~{{ ansible_user_id }}/bin
+        remote_src: yes
