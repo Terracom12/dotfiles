@@ -11,3 +11,5 @@
 	st = status
 [commit]
 	gpgSign = true
+[init]
+	defaultBranch = main
