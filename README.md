@@ -7,7 +7,11 @@ Uses [chezmoi](https://www.chezmoi.io/) for dotfile management and [ansible](htt
 
 
 Install these dotfiles on a newly created system with the following command (Prerequisite: ssh auth to GitHub must be set up):
+
 ```shell
 export GITHUB_USERNAME=Terracom12
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --ssh $GITHUB_USERNAME
 ```
+
+:> [!WARNING]
+> Use with caution. This command will overwrite existing dotfiles!
