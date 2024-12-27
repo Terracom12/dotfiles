@@ -13,5 +13,5 @@ export GITHUB_USERNAME=Terracom12
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --ssh $GITHUB_USERNAME
 ```
 
-:> [!WARNING]
+> [!WARNING]
 > Use with caution. This command will overwrite existing dotfiles!
