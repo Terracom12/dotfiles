@@ -216,7 +216,9 @@ symbol = "spack "
 symbol = "solidity "
 
 [status]
-symbol = "[x](bold red) "
+# symbol = "[x](bold red) "
+format = "[\\[$status\\]]($style) "
+disabled = false
 
 [sudo]
 symbol = "sudo "
