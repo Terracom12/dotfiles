@@ -6,6 +6,7 @@
 alias ll='ls -AlF'
 alias la='ls -a'
 alias mv="mv --no-clobber"
+alias cp="cp --no-clobber"
 
 mkcd() {
   mkdir $1 &&
