@@ -7,8 +7,10 @@
 	helper = !/usr/bin/gh auth git-credential
 [alias]
 	co = checkout
+	sw = switch
 	br = branch
 	st = status
+    la = log --all --oneline --graph
 [commit]
 	gpgSign = true
 [init]
