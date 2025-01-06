@@ -146,25 +146,25 @@
           - ~{{ ansible_user_id }}/.cargo/bin/starship
 
 
-    - name: Creates HOME/bin
+    - name: Creates HOME/.local/bin
       ansible.builtin.file:
-        path: ~{{ ansible_user_id }}/bin
+        path: ~{{ ansible_user_id }}/.local/bin
         state: directory
 
-    - name: Add HOME/bin to PATH
+    - name: Add $HOME/.local/bin to PATH
       ansible.builtin.lineinfile:
         path: ~{{ ansible_user_id }}/.bashrc
-        line: 'export PATH="$HOME/bin:$PATH"'
+        line: 'export PATH="$PATH:$HOME/.local/bin"'
         state: present
 
     - name: Install fzf
       ansible.builtin.unarchive:
         src: https://github.com/junegunn/fzf/releases/download/v0.57.0/fzf-0.57.0-linux_amd64.tar.gz
-        dest: ~{{ ansible_user_id }}/bin
+        dest: ~{{ ansible_user_id }}/.local/bin
         remote_src: yes
 
     - name: Install lazygit
       ansible.builtin.unarchive:
         src: https://github.com/jesseduffield/lazygit/releases/download/v0.44.1/lazygit_0.44.1_Linux_x86_64.tar.gz
-        dest: ~{{ ansible_user_id }}/bin
+        dest: ~{{ ansible_user_id }}/.local/bin
         remote_src: yes

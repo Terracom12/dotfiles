@@ -130,9 +130,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 export MYPYPATH="/opt/ros/humble/lib/python3.10/site-packages/"
-export PATH=$PATH:$HOME/.local/bin
-export PATH=$PATH:$HOME/Installs/scripts
-export PATH=$PATH:/usr/local/texlive/2024/bin/x86_64-linux
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/Installs/scripts"
+export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux"
 . "$HOME/.cargo/env"
 
 
