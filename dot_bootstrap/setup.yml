@@ -168,3 +168,11 @@
         src: https://github.com/jesseduffield/lazygit/releases/download/v0.44.1/lazygit_0.44.1_Linux_x86_64.tar.gz
         dest: ~{{ ansible_user_id }}/.local/bin
         remote_src: yes
+
+    - name: Install superfile
+      ansible.builtin.unarchive:
+        src: https://github.com/yorukot/superfile/releases/download/v1.1.7/superfile-linux-v1.1.7-amd64.tar.gz
+        dest: ~{{ ansible_user_id }}/.local/bin
+        remote_src: yes
+        extra_opts:
+          - "--strip-components=3"  # Discard directory structure and only keep nested executable
