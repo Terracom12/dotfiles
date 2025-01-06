@@ -1,0 +1,52 @@
+{{ if and (eq .chezmoi.osRelease.versionCodename "jammy") (promptBool "Would you like to install ROS 2 humble") -}}
+#!/bin/bash
+
+set -eu  # Strict mode
+
+# Define ANSI escape color codes
+green='\033[0;32m'
+red='\033[0;31m'
+nc='\033[0m' # No Color
+
+echo -e "${green}Installing ROS 2 humble${nc}"
+
+# ros2 basic install: https://docs.ros.org/en/humble/Installation.html
+
+sudo apt update && sudo apt install locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+
+sudo apt install software-properties-common -y
+sudo add-apt-repository universe -y
+
+
+# Add ROS 2 GPG key
+sudo apt update && sudo apt install curl -y
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+
+sudo apt update
+sudo apt-get upgrade -y
+
+
+sudo apt install python3-colcon-common-extensions -y
+sudo apt install ros-humble-desktop -y
+
+# Install and initialize rosdep
+sudo apt install python3-rosdep2 -y
+rosdep update
+
+# Check if line to source dist is already in .bashrc
+src_line='source /opt/ros/humble/setup.bash'
+if ! grep "${src_line}" ~/.bashrc --silent; then
+    echo "${src_line}" >> ~/.bashrc
+fi
+
+echo -e "${green}Completed install of ROS 2 humble${nc}"
+
+{{ end }}
