@@ -15,3 +15,11 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --ssh $GITHUB_USERNAME
 
 > [!WARNING]
 > Use with caution. This command will overwrite existing dotfiles!
+
+## To-Do
+
+- [ ] Add to package list
+    - tmux
+    - batcat
+- [ ] More idempotent ROS 2 install
+- [ ] Fix issue with alacritty opacity

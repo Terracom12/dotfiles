@@ -1,0 +1,4 @@
+{{ $installROS2 := and (eq .chezmoi.osRelease.versionCodename "jammy") (promptBoolOnce . "installROS2" "Would you like to install ROS 2 humble" ) -}}
+
+[data]
+	installROS2 = {{ $installROS2 }}

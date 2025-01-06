@@ -1,4 +1,4 @@
-{{ if and (eq .chezmoi.osRelease.versionCodename "jammy") (promptBool "Would you like to install ROS 2 humble") -}}
+{{ if .installROS2 -}}
 #!/bin/bash
 
 set -eu  # Strict mode
