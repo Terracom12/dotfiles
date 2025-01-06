@@ -137,14 +137,20 @@
         line: 'export PATH="$HOME/.cargo/bin:$PATH"'
         state: present
 
-    - name: Install Alacritty, Zoxide, and Starship
+    - name: Install Alacritty
       ansible.builtin.command:
-        cmd: ~{{ ansible_user_id }}/.cargo/bin/cargo install alacritty zoxide starship
-        creates: 
-          - ~{{ ansible_user_id }}/.cargo/bin/alacritty
-          - ~{{ ansible_user_id }}/.cargo/bin/zoxide
-          - ~{{ ansible_user_id }}/.cargo/bin/starship
+        cmd: ~{{ ansible_user_id }}/.cargo/bin/cargo install alacritty
+        creates: ~{{ ansible_user_id }}/.cargo/bin/alacritty
 
+    - name: Install Zoxide
+      ansible.builtin.command:
+        cmd: ~{{ ansible_user_id }}/.cargo/bin/cargo install zoxide
+        creates: ~{{ ansible_user_id }}/.cargo/bin/zoxide
+
+    - name: Install Starship
+      ansible.builtin.command:
+        cmd: ~{{ ansible_user_id }}/.cargo/bin/cargo install starship
+        creates: ~{{ ansible_user_id }}/.cargo/bin/starship
 
     - name: Creates HOME/.local/bin
       ansible.builtin.file:
