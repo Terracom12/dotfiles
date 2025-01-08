@@ -1,0 +1,21 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "alt+i",
+        "command": "clangd.inlayHints.toggle"
+    },
+    {
+        "key": "ctrl+shift+j",
+        "command": "workbench.action.tasks.runTask"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "workbench.action.quickOpenSelectPrevious",
+        "when": "inQuickOpen"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "workbench.action.quickOpenSelectNext",
+        "when": "inQuickOpen"
+    }
+]
