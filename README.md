@@ -23,5 +23,8 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --ssh $GITHUB_USERNAME
     - batcat
     - nala
     - chezmoi
+    - Web browser
+    - Password manager
+    - Discord
 - [ ] More idempotent ROS 2 install
 - [ ] Fix issue with alacritty opacity
