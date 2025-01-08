@@ -120,6 +120,7 @@ source /opt/ros/humble/setup.bash
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.scripts"
 export PATH="$PATH:$HOME/Installs/scripts"
 export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux"
 . "$HOME/.cargo/env"
