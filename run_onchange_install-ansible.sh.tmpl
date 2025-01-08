@@ -12,9 +12,7 @@ yellow='\033[0;33m'
 nc='\033[0m' # No Color
 
 
-# Paths
 playbook_path="${HOME}/.bootstrap/setup.yml"
-playbook_hash_path="${HOME}/.bootstrap/.setup.yml.hash"
 
 install_on_ubuntu() {
     sudo apt-get update -qq --no-install-recommends
@@ -46,12 +44,10 @@ if ! command -v ansible &> /dev/null; then
     exit 1
 fi
 
-playbook_hash="$(md5sum "${playbook_path}" || echo "")"
-if [[ ! -f "${playbook_hash_path}" ]] || [[ "${playbook_hash}" != "$(cat "${playbook_hash_path}")" ]]; then
-    echo -e "${yellow}Ansible playbook at '${playbook_path}' changed. Running ansible...${nc}"
-    ansible-playbook ~/.bootstrap/setup.yml --ask-become-pass -v
-    echo "${playbook_hash}" > "${playbook_hash_path}"
-else
-    echo -e "${green}Ansible playbook unchanged. Nothing to do.${nc}"
-fi
+# Use strategy of hashing in template to re-run script from:
+# https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/#run-a-script-when-the-contents-of-another-file-changes
+# Playbook hash: {{ include "dot_bootstrap/setup.yml" | sha256sum }}
 
+echo -e "${yellow}Ansible playbook at '${playbook_path}' changed. Running ansible...${nc}"
+
+ansible-playbook ~/.bootstrap/setup.yml --ask-become-pass -v
