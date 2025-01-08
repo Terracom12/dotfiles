@@ -33,6 +33,6 @@ echo "${to_install}"
 echo -e "${nc}"
 
 # Use xargs to trim excess whitespace
-for ext in "${to_install}"; do
+for ext in ${to_install}; do
     code --install-extension "${ext}"
 done
