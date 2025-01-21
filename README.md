@@ -27,4 +27,5 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --ssh $GITHUB_USERNAME
     - Password manager
     - Discord
 - [ ] More idempotent ROS 2 install
+- [ ] Add colcon_cd to ROS 2
 - [ ] Fix issue with alacritty opacity
