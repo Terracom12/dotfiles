@@ -6,48 +6,64 @@
 # ß
 # If the above line is not correctly displayed, fix your editor first!
 
+# TODO: Laptop battery has gone to shit?
+
 general {
         colors = true
         interval = 5
+        markup = "pango"
 }
 
-order += "ipv6"
 order += "wireless _first_"
-order += "ethernet _first_"
+# order += "ethernet _first_"
 order += "battery all"
-order += "disk /"
+# order += "disk /"
 order += "load"
 order += "memory"
+order += "volume master"
 order += "tztime local"
 
 wireless _first_ {
-        format_up = "W: (%quality at %essid) %ip"
-        format_down = "W: down"
+        format_up = "WIFI (%quality at %essid)"
+        format_down = "WIFI down"
 }
 
 ethernet _first_ {
-        format_up = "E: %ip (%speed)"
-        format_down = "E: down"
+        format_up = "ETH %ip (%speed)"
+        format_down = "ETH down"
 }
 
 battery all {
-        format = "%status %percentage %remaining"
+        format = "%status %percentage (%remaining)"
+        format_down = "No battery"
+        status_chr = "CHR"
+        status_bat = "BAT"
+        status_unk = "? UNK"
+        status_full = "FULL"
+        status_idle = "IDLE"
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 15
+        threshold_type = time
 }
 
-disk "/" {
-        format = "%avail"
+volume master {
+        format = "VOL %volume"
+        format_muted = "VOL MUTED (%volume)"
+        device = "pulse"
 }
 
 load {
-        format = "%1min"
+        format = "LOAD %1min"
+        max_threshold = "4.0"
 }
 
 memory {
-        format = "%used | %available"
-        threshold_degraded = "1G"
-        format_degraded = "MEMORY < %available"
+        format = "MEM %percentage_used"
+        threshold_degraded = "15%"
+        threshold_critical = "5%"
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M:%S"
+        # extra space to seperate from tray output
+        format = "%b %d %H:%M "
 }
