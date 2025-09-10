@@ -28,8 +28,13 @@ ifcepkgc() {
 }
 
 # Program aliases
-alias bat='batcat'
-alias lg='lazygit'
+
+if command -v batcat &>/dev/null; then
+    alias bat='batcat'
+fi
+if command -v lazygit &>/dev/null; then
+    alias lg='lazygit'
+fi
 # alias code='code-insiders'
 
 if [[ $TERM == "xterm-kitty" ]]; then
