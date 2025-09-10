@@ -9,8 +9,8 @@ alias mv="mv --no-clobber"
 alias cp="cp --no-clobber"
 
 mkcd() {
-  mkdir $1 &&
-    cd $1
+    mkdir -p $1 &&
+        command cd $1
 }
 
 # ROS2 aliases
@@ -21,10 +21,10 @@ alias cbsel='cb --packages-select'
 alias rdp='rosdep install --from-paths . -y --ignore-src'
 alias rrm='rm -r build/ install/ log/'
 pypkgc() {
-  ros2 pkg create $1 --build-type=ament_python --maintainer-name="Matthew Reese" --license="Apache-2.0" --dependencies=rclpy
+    ros2 pkg create $1 --build-type=ament_python --maintainer-name="Matthew Reese" --license="Apache-2.0" --dependencies=rclpy
 }
 ifcepkgc() {
-  ros2 pkg create $1 --build-type=ament_cmake --maintainer-name="Matthew Reese" --license="Apache-2.0"
+    ros2 pkg create $1 --build-type=ament_cmake --maintainer-name="Matthew Reese" --license="Apache-2.0"
 }
 
 # Program aliases
@@ -38,7 +38,7 @@ fi
 # alias code='code-insiders'
 
 if [[ $TERM == "xterm-kitty" ]]; then
-  alias ssh='kitten ssh'
+    alias ssh='kitten ssh'
 fi
 
 alias tma='tmux attach || tmux'
