@@ -37,3 +37,8 @@ if [[ $TERM == "xterm-kitty" ]]; then
 fi
 
 alias tma='tmux attach || tmux'
+
+function gdb-aarch64() {
+    qemu-aarch64 -g 1236 -L /usr/aarch64-linux-gnu/ "$1" &
+    gdb-multiarch -ex 'set architecture aarch64' -ex 'target remote localhost:1236' "$1"
+}
