@@ -17,3 +17,7 @@
 	defaultBranch = main
 [pull]
 	rebase = true
+[status]
+	submodulesummary = 1
+[push]
+	recurseSubmodules = check
