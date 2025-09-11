@@ -124,16 +124,6 @@ if [[ -f /opt/ros/humble/setup.bash ]]; then
     source /opt/ros/humble/setup.bash
 fi
 
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/bin:$PATH"
-export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$HOME/Installs/scripts"
-export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux"
-
-if [[ -f "$HOME/.cargo/env" ]]; then
-    . "$HOME/.cargo/env"
-fi
-
 function tm() {
     local name="$1"
 
@@ -160,21 +150,5 @@ export NVM_DIR="$HOME/.nvm"
 
 export MYPYPATH="/opt/ros/humble/lib/python3.10/site-packages/"
 
-export PATH="$HOME/scripts:$PATH"
-
-# pnpm
-export PNPM_HOME="/home/matt/.local/share/pnpm"
-case ":$PATH:" in
-*":$PNPM_HOME:"*) ;;
-*) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-#
-export RCUTILS_COLORIZED_OUTPUT=1
-export EDITOR=nvim
 export DISABLE_AUTO_TITLE=true
 alias sshorin="ssh -t orin@ubuntu.local 'source ~/.profile && cd /home/orin/ros2_ws && source install/setup.bash && bash --login'"
-
-if [[ -f ~/.env ]]; then
-    source ~/.env
-fi

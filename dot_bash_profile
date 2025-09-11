@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# .bash_profile
+
+# Some programs (I'm looking at you, tmux) only source .bash_profile, even for interactive sessions
+if [ -f ~/.bashrc ]; then
+    # shellcheck source=/dev/null
+    . ~/.bashrc
+fi
+
+########## PATH
+
+prepend_path() {
+    append_path="$1"
+    # Path entries that contain ':' are not valid
+    if grep -Fq ':' <<<"$append_path"; then
+        return 1
+    fi
+
+    # Sourced from rustc's env file setup
+    # affix colons on either side of $PATH to simplify matching
+    case ":${PATH}:" in
+    *:"$append_path":*) ;;
+    *)
+        # Prepending path in case a system-installed rustc needs to be overridden
+        export PATH="$append_path:$PATH"
+        ;;
+    esac
+}
+
+if [ -f "$HOME/.cargo/env" ]; then
+    # shellcheck source=/dev/null
+    . "$HOME/.cargo/env"
+fi
+
+prepend_path ~/scripts
+prepend_path ~/bin
+prepend_path ~/.local/bin
+prepend_path ~/.config/tmux/plugins/tmux-session-wizard/bin
+
+# pnpm
+export PNPM_HOME="/home/matt/.local/share/pnpm"
+case ":$PATH:" in
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+if [ -f ~/.env ]; then
+    # shellcheck source=/dev/null
+    source ~/.env
+fi
+
+########## Other Enviornment Vars
+
+export RCUTILS_COLORIZED_OUTPUT=1
+export EDITOR=nvim
