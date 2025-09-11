@@ -152,3 +152,25 @@ alias sshorin="ssh -t orin@ubuntu.local 'source ~/.profile && cd /home/orin/ros2
 if [[ -f ~/.env ]]; then
     source ~/.env
 fi
+function find_header() {
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: find_header <c-header-name>"
+        return 1
+    fi
+
+    local c_code="#include <$1>"
+
+    echo "$c_code" |
+        gcc -c -x c - -H -o /dev/null 2>&1 |
+        tail -c +3 |
+        head -n1
+}
+
+function syscall_nr() {
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: syscall_nr <name>"
+        return 1
+    fi
+
+    echo "SYS_$1" | gcc -include sys/syscall.h -E - | tail -n1
+}
