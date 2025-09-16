@@ -16,7 +16,7 @@ set $super Mod4
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 12
+font pango:DejaVu Sans Mono 14
 
 
 ###################################################################################################
@@ -25,16 +25,25 @@ font pango:DejaVu Sans Mono 12
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
+set $ws1 "1: <b>Web</b>"
+set $ws2 "2: <b>Code</b>"
+set $ws3 "3: <b>Comms</b>"
+set $ws4 "4: <b>Work</b>"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
+
+###################################################################################################
+                                    # Application Assignments #
+###################################################################################################
+
+assign [class="Chromium:(Work|School)"] → workspace number $ws4
+assign [class="^discord$"] → workspace number $ws3
+for_window [class="[Ss]potify"] move scratchpad
 
 
 ###################################################################################################
@@ -81,27 +90,21 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $super
 
 # start a terminal
-bindsym $super+Return exec ghostty
-bindsym Ctrl+$alt+t exec ghostty
+set $terminal ghostty
+bindsym $super+Return exec $terminal
+bindsym Ctrl+$alt+t exec $terminal
 
 # kill focused window
 bindsym $super+Shift+q kill
 bindsym $alt+F4 kill
 
-bindsym $super+s exec NOW=$(date +%d-%b-%Y_%H-%M-%S) && maim --format png --select > ~/Pictures/screenshots/screenshot_$NOW.png && xclip -selection clip -t image/png ~/screenshots/screenshot_$NOW.png
-
-# start dmenu (a program launcher)
-bindsym $super+d exec --no-startup-id "dmenu_run -nf '#BBBBBB' -nb '#222223' -sb '#005577' -sf '#EEEEEE' -fn 'monospace-10'"
+bindsym $super+s exec NOW=$(date +%d-%b-%Y_%H-%M-%S) && maim --format png --select > ~/Pictures/screenshots/screenshot_$NOW.png && xclip -selection clip -t image/png ~/Pictures/screenshots/screenshot_$NOW.png
 
 # start rofi (a program launcher + et al.)
 # -case-smart -show-icons -markup
-bindsym Ctrl+space exec rofi -show combi -combi-modes 'drun#run' -modes combi
-
-# A more modern dmenu replacement is rofi:
-# bindcode $super+40 exec "rofi -modi drun,run -show drun"
-# There also is i3-dmenu-desktop which only displays applications shipping a
-# .desktop file. It is a wrapper around dmenu, so you need that installed.
-# bindcode $super+40 exec --no-startup-id i3-dmenu-desktop
+set $rofi_cmd rofi rofi -show combi -combi-modes 'window#drun#run' -modes combi
+bindsym Ctrl+space exec $rofi_cmd
+bindsym $alt+space exec $rofi_cmd
 
 # lock screen
 bindsym Shift+$super+l exec --no-startup-id loginctl lock-session
@@ -134,31 +137,27 @@ bindsym $super+Shift+Down move down
 bindsym $super+Shift+Up move up
 bindsym $super+Shift+Right move right
 
-# split in horizontal orientation
-# bindsym $super+h split h
-
-# split in vertical orientation
-bindsym $super+v split v
-
 # enter fullscreen mode for the focused container
 bindsym $super+f fullscreen toggle
 
+# Toggle different border modes in case I need to see the title for some reason
+bindsym $super+b border none
+bindsym Shift+$super+b border normal
+
 # change container layout (stacked, tabbed, toggle split)
-bindsym $super+w layout tabbed
-bindsym $super+e layout toggle split
+bindsym $super+w layout toggle tabbed split
 
 # toggle tiling / floating
 bindsym $super+Shift+space floating toggle
 
-# change focus between tiling / floating windows
-bindsym $super+space focus mode_toggle
+### Scratchpad operations
+# Make the currently focused window a scratchpad
+bindsym $super+Shift+minus move scratchpad
+# Show the first scratchpad window
+bindsym $super+minus scratchpad show
 
 # focus the parent container
 bindsym $super+a focus parent
-
-# focus the child container
-#bindsym $super+d focus child
-
 
 # switch to workspace
 bindsym $super+1 workspace number $ws1
@@ -172,17 +171,19 @@ bindsym $super+8 workspace number $ws8
 bindsym $super+9 workspace number $ws9
 bindsym $super+0 workspace number $ws10
 
-# move focused container to workspace
-bindsym $super+Shift+1 move container to workspace number $ws1
-bindsym $super+Shift+2 move container to workspace number $ws2
-bindsym $super+Shift+3 move container to workspace number $ws3
-bindsym $super+Shift+4 move container to workspace number $ws4
-bindsym $super+Shift+5 move container to workspace number $ws5
-bindsym $super+Shift+6 move container to workspace number $ws6
-bindsym $super+Shift+7 move container to workspace number $ws7
-bindsym $super+Shift+8 move container to workspace number $ws8
-bindsym $super+Shift+9 move container to workspace number $ws9
-bindsym $super+Shift+0 move container to workspace number $ws10
+# Move focused container to workspace
+# My workflow is such that I normally want to follow the window that moved,
+# so these are set accordingly
+bindsym $super+Shift+1 move container to workspace number $ws1 ; workspace number $ws1
+bindsym $super+Shift+2 move container to workspace number $ws2 ; workspace number $ws2
+bindsym $super+Shift+3 move container to workspace number $ws3 ; workspace number $ws3
+bindsym $super+Shift+4 move container to workspace number $ws4 ; workspace number $ws4
+bindsym $super+Shift+5 move container to workspace number $ws5 ; workspace number $ws5
+bindsym $super+Shift+6 move container to workspace number $ws6 ; workspace number $ws6
+bindsym $super+Shift+7 move container to workspace number $ws7 ; workspace number $ws7
+bindsym $super+Shift+8 move container to workspace number $ws8 ; workspace number $ws8
+bindsym $super+Shift+9 move container to workspace number $ws9 ; workspace number $ws9
+bindsym $super+Shift+0 move container to workspace number $ws10 ; workspace number $ws10
 
 # reload the configuration file
 bindsym $super+Shift+c reload
@@ -223,6 +224,8 @@ bindsym $super+r mode "resize"
                                             # Theming #
 ###################################################################################################
 
+for_window [all] border none
+
 # class                 border  bground text    indicator child_border
 client.focused          #83CAFA #51A2DA #FFFFFF #83CAFA   #51A2DA
 client.focused_inactive #8C8C8C #4C4C4C #FFFFFF #4C4C4C   #8C8C8C
@@ -240,6 +243,8 @@ client.background       #FFFFFF
 # finds out, if available)
 bar {
   position top
+
+  workspace_min_width 100
 
   colors {
     background #000000
