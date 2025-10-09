@@ -140,8 +140,20 @@ if command -v zoxide &>/dev/null; then
     eval "$(zoxide init bash --cmd cd)"
 fi
 if command -v fzf &>/dev/null; then
-    export PATH="$HOME/.config/tmux/plugins/tmux-session-wizard/bin:$PATH"
-    eval "$(fzf --bash)"
+    # Disable <C-t> binding; using it to fuzzy find tmux sessions
+    FZF_CTRL_T_COMMAND='' eval "$(fzf --bash)"
+
+    TMUX_SESSION_WIZARD_PATH="$HOME/.config/tmux/plugins/tmux-session-wizard/bin"
+    if [[ -d $TMUX_SESSION_WIZARD_PATH ]]; then
+        export PATH="$TMUX_SESSION_WIZARD_PATH:$PATH"
+
+        if [[ -x "$TMUX_SESSION_WIZARD_PATH/t" ]]; then
+            bind -x "\"\C-t\":\"$TMUX_SESSION_WIZARD_PATH/t\""
+        fi
+    fi
+fi
+if command -v direnv &>/dev/null; then
+    eval "$(direnv hook bash)"
 fi
 
 export NVM_DIR="$HOME/.nvm"
