@@ -37,6 +37,8 @@ if command -v lazygit &>/dev/null; then
 fi
 # alias code='code-insiders'
 
+alias n='nvim'
+
 if [[ $TERM == "xterm-kitty" ]]; then
     alias ssh='kitten ssh'
 fi
