@@ -40,9 +40,11 @@ set $ws10 "10"
 ###################################################################################################
                                     # Application Assignments #
 ###################################################################################################
+# Run xprop(1) to get window properties
 
 assign [class="Chromium:(Work|School)"] → workspace number $ws4
 assign [class="^discord$"] → workspace number $ws3
+assign [class="^zoom$"] → workspace number $ws3
 for_window [class="^[Ss]potify$"] move scratchpad , scratchpad show
 for_window [class="^pavucontrol$"] floating enable
 for_window [class="^[Bb]lueman-manager$"] floating enable
@@ -78,7 +80,8 @@ exec --no-startup-id nm-applet
 
 # System tray volume icon for pavucontrol
 # https://github.com/christophgysin/pasystray
-exec --no-startup-id pasystray
+# TODO: Remove? This might be enabled by a serivce unit
+# exec --no-startup-id pasystray
 
 # System tray volume icon for bluetooth
 # https://github.com/blueman-project/blueman
@@ -87,6 +90,7 @@ exec --no-startup-id blueman-applet
 ###################################################################################################
                                           # Key Bindings #
 ###################################################################################################
+# Use xev(1) to get special key names
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status pkill -SIGRTMIN+10 i3blocks
@@ -119,9 +123,9 @@ bindsym $super+Shift+q kill
 bindsym $alt+F4 kill
 
 # Take a screenshot with maim(1) and copy it to the system clipboard with xclip(1)
-bindsym $super+s exec NOW=$(date +%d-%b-%Y_%H-%M-%S) && maim --format png --select > ~/Pictures/screenshots/screenshot_$NOW.png && xclip -selection clip -t image/png ~/Pictures/screenshots/screenshot_$NOW.png
+bindsym $super+s exec NOW=$(date +%d-%b-%Y_%H-%M-%S) && maim --quality 10 --format png --select > ~/Pictures/screenshots/screenshot_$NOW.png && xclip -selection clip -t image/png ~/Pictures/screenshots/screenshot_$NOW.png
 # Same as above, except we get a prompt for a filename
-bindsym Shift+$super+s exec i3-input -P 'Screenshot name: ' -F 'exec [[ -f ~/Pictures/screenshots/"%s".png ]] && notify-send "~/Pictures/screenshots/%s.png already exists" && exit || NOW=$(date +%d-%b-%Y_%H-%M-%S) && maim --format png --select > ~/Pictures/screenshots/"%s".png && xclip -selection clip -t image/png ~/Pictures/screenshots/"%s".png'
+bindsym Shift+$super+s exec i3-input -P 'Screenshot name: ' -F 'exec [[ -f ~/Pictures/screenshots/"%s".png ]] && notify-send "~/Pictures/screenshots/%s.png already exists" && exit || NOW=$(date +%d-%b-%Y_%H-%M-%S) && maim --quality 10 --format png --select > ~/Pictures/screenshots/"%s".png && xclip -selection clip -t image/png ~/Pictures/screenshots/"%s".png'
 
 # start rofi (a program launcher + et al.)
 # -case-smart -show-icons -markup
@@ -130,35 +134,22 @@ bindsym Ctrl+space exec $rofi_cmd
 bindsym $alt+space exec $rofi_cmd
 
 # lock screen
-bindsym Shift+$super+l exec --no-startup-id loginctl lock-session
+bindsym $super+Ctrl+l exec --no-startup-id loginctl lock-session
 
 # change focus (vim-like bindings)
 bindsym $super+h focus left
 bindsym $super+j focus down
 bindsym $super+k focus up
 bindsym $super+l focus right
-# bindsym $super+l focus up
-
-# alternatively, you can use the cursor keys:
-bindsym $super+Left focus left
-bindsym $super+Down focus down
-bindsym $super+Up focus up
-bindsym $super+Right focus right
 
 # move focused window
-bindsym $super+Shift+j move left
-bindsym $super+Shift+k move down
-# bindsym $super+Shift+l move up
-bindsym $super+Shift+semicolon move right
+bindsym $super+Shift+h move left
+bindsym $super+Shift+j move down
+bindsym $super+Shift+k move up
+bindsym $super+Shift+l move right
 
 # Trackpads are annoying
 focus_follows_mouse no
-
-# alternatively, you can use the cursor keys:
-bindsym $super+Shift+Left move left
-bindsym $super+Shift+Down move down
-bindsym $super+Shift+Up move up
-bindsym $super+Shift+Right move right
 
 # enter fullscreen mode for the focused container
 bindsym $super+f fullscreen toggle
@@ -195,6 +186,18 @@ bindsym $super+9 workspace number $ws9
 bindsym $super+0 workspace number $ws10
 
 # Move focused container to workspace
+bindsym $super+Ctrl+1 move container to workspace number $ws1 ; workspace number $ws1
+bindsym $super+Ctrl+2 move container to workspace number $ws2 ; workspace number $ws2
+bindsym $super+Ctrl+3 move container to workspace number $ws3 ; workspace number $ws3
+bindsym $super+Ctrl+4 move container to workspace number $ws4 ; workspace number $ws4
+bindsym $super+Ctrl+5 move container to workspace number $ws5 ; workspace number $ws5
+bindsym $super+Ctrl+6 move container to workspace number $ws6 ; workspace number $ws6
+bindsym $super+Ctrl+7 move container to workspace number $ws7 ; workspace number $ws7
+bindsym $super+Ctrl+8 move container to workspace number $ws8 ; workspace number $ws8
+bindsym $super+Ctrl+9 move container to workspace number $ws9 ; workspace number $ws9
+bindsym $super+Ctrl+0 move container to workspace number $ws10 ; workspace number $ws10
+
+# Move focused container to workspace AND focus on workspace
 # My workflow is such that I normally want to follow the window that moved,
 # so these are set accordingly
 bindsym $super+Shift+1 move container to workspace number $ws1 ; workspace number $ws1
@@ -209,19 +212,31 @@ bindsym $super+Shift+9 move container to workspace number $ws9 ; workspace numbe
 bindsym $super+Shift+0 move container to workspace number $ws10 ; workspace number $ws10
 
 # reload the configuration file
-bindsym $super+Shift+c reload
+bindsym $super+Ctrl+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $super+Shift+r restart
+bindsym $super+Ctrl+r restart
 # exit i3 (logs you out of your X session)
-bindsym $super+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $super+Ctrl+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# Monitor brightness - most useful for laptops
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+bindsym XF86MonBrightnessUp exec brightnessctl set +10%
+
+# Disable touchpad (for laptops)
+bindsym XF86TouchpadToggle exec notify-send "$(~/scripts/toggle-touchpad)"
 
 ##### asusctl and supergfxctl keybinds (specifically for asus laptops!)
 # F5 = fan profile key
 # Switch profiles between quiet, balanced, and performance and notify user
 # bindsym 203 exec --no-startup-id notify-send "TESTING 123"
-bindsym F5 exec --no-startup-id asusctl profile -n && notify-send "Set fan profile to :: $(asusctl profile -p | tail -n 1 | awk '{ print $NF }')"
-# XF86Launch1 = M4 "asus" key -- switch 
+# XF86Launch4 = Fan Ctrl "asus" key
+bindsym XF86Launch4 exec --no-startup-id asusctl profile -n && notify-send "Set fan profile to : $(asusctl profile -p | tail -n 1 | awk '{ print $NF }')"
+# XF86Launch1 = M4 "asus" key
 bindsym --release XF86Launch1 exec --no-startup-id notify-send "M4 key!"
+# XF86Launch3 = AURA "asus" key
+bindsym XF86Launch3 exec --no-startup-id i3-input -P 'Keyboard color (hex): ' -F 'exec asusctl aura static -c "%s"'
+bindsym XF86KbdBrightnessDown exec --no-startup-id asusctl --prev-kbd-bright
+bindsym XF86KbdBrightnessUp exec --no-startup-id asusctl --next-kbd-bright
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
