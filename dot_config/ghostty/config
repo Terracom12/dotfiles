@@ -1,6 +1,8 @@
 # Use JetBrainsMono Nerd Font
 # https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.zip
 font-family = JetBrainsMono Nerd Font
+# Disable ligatures
+font-feature = -calt
 
 # Font size in pts
 font-size = 16
