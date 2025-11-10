@@ -56,7 +56,11 @@ fi
 
 # Use strategy of hashing in template to re-run script from:
 # https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/#run-a-script-when-the-contents-of-another-file-changes
-# Playbook hashes: {{ include "dot_bootstrap/setup.yml" | sha256sum }} {{ include "dot_bootstrap/fedora.yml" | sha256sum }} {{ include "dot_bootstrap/debian.yml" | sha256sum }}
+{{ $glob_str := print .chezmoi.sourceDir "/dot_bootstrap/**/*.{txt,yml,yaml}" }}
+# Bootstrap file hashes:
+{{ range $file := glob $glob_str -}}
+# {{ $file }} : {{ include $file | sha256sum }}
+{{ end }}
 
 echo -e "${yellow}Ansible playbook at '${playbook_path}' changed. Running ansible...${nc}"
 

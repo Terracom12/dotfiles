@@ -1,1 +1,2 @@
 https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+https://download.docker.com/linux/fedora/docker-ce.repo
