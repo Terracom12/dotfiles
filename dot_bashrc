@@ -141,6 +141,8 @@ function tm() {
     tmux new-session -s "$name" -d
 }
 
+[ -f ~/.cargo/env ] && source ~/.cargo/env
+
 if command -v gh &>/dev/null; then
     eval "$(gh completion -s bash)"
 fi
