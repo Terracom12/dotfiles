@@ -58,4 +58,5 @@
         name: "{{ cargo_package_list }}"
         state: present
         executable:  "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+        path: /usr/local
 ...
