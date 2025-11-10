@@ -13,7 +13,7 @@ if ! [[ $REPLY =~ [Yy] ]]; then
     exit
 fi
 
-name="$(git config --global user.name)"
+name="$(git config user.name)"
 echo "'$name' is your name from git"
 read -rp "If this is correct, press enter; otherwise type your full name: "
 if [[ -n $REPLY ]]; then
