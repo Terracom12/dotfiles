@@ -2,9 +2,10 @@
 	name = Matthew Reese
 	email = awesomepop012@hotmail.com
 	signingkey = awesomepop012@hotmail.com
-[credential "https://github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
+[merge]
+    tool = nvimdiff
+[diff]
+    tool = nvimdiff
 [alias]
 	co = checkout
 	sw = switch
@@ -17,6 +18,12 @@
 	defaultBranch = main
 [pull]
 	rebase = true
+[status]
+	submodulesummary = 1
+[push]
+	recurseSubmodules = check
+[credential "https://github.com"]
+	helper = !/usr/bin/gh auth git-credential
 [credential "https://gist.github.com"]
     helper =
     helper = !/usr/bin/gh auth git-credential
