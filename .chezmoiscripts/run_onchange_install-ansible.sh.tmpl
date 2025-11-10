@@ -62,6 +62,6 @@ fi
 # {{ $file }} : {{ include $file | sha256sum }}
 {{ end }}
 
-echo -e "${yellow}Ansible playbook at '${playbook_path}' changed. Running ansible...${nc}"
+echo -e "${yellow}Ansible bootstrap changed. Re-Running ansible...${nc}"
 
-ANSIBLE_DISPLAY_SKIPPED_HOSTS=false ansible-playbook ~/.bootstrap/setup.yml --ask-become-pass -v
+ANSIBLE_DISPLAY_SKIPPED_HOSTS=false ansible-playbook ~/.bootstrap/setup.yml --ask-become-pass -vv
