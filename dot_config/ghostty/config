@@ -17,4 +17,4 @@ maximize = true
 
 background-opacity = 0.8
 
-command = /bin/bash -c "if [ -f ~/.config/tmux/plugins/tmux-session-wizard/bin/t ]; then ~/.config/tmux/plugins/tmux-session-wizard/bin/t && bash -i; else bash -i; fi"
+command = /bin/bash -c "if [ -f ~/.config/tmux/plugins/tmux-session-wizard/bin/t ] && tmux ls &>/dev/null; then ~/.config/tmux/plugins/tmux-session-wizard/bin/t && bash -i; else bash -i; fi"
