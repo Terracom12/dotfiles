@@ -25,10 +25,14 @@ font pango:DejaVu Sans Mono 14
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1: <b>Web</b>"
-set $ws2 "2: <b>Code</b>"
-set $ws3 "3: <b>Comms</b>"
-set $ws4 "4: <b>Work</b>"
+# set $ws1 "1: <b>Web</b>"
+# set $ws2 "2: <b>Code</b>"
+# set $ws3 "3: <b>Comms</b>"
+# set $ws4 "4: <b>Work</b>"
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
@@ -216,14 +220,14 @@ bindsym $super+Ctrl+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $super+Ctrl+r restart
 # exit i3 (logs you out of your X session)
-bindsym $super+Ctrl+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+# bindsym $super+Ctrl+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # Monitor brightness - most useful for laptops
 bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
 bindsym XF86MonBrightnessUp exec brightnessctl set +10%
 
 # Disable touchpad (for laptops)
-bindsym XF86TouchpadToggle exec notify-send "$(~/scripts/toggle-touchpad)"
+bindsym XF86TouchpadToggle exec notify-send "$(toggle-touchpad)"
 
 ##### asusctl and supergfxctl keybinds (specifically for asus laptops!)
 # F5 = fan profile key
@@ -234,7 +238,7 @@ bindsym XF86Launch4 exec --no-startup-id asusctl profile -n && notify-send "Set 
 # XF86Launch1 = M4 "asus" key
 bindsym --release XF86Launch1 exec --no-startup-id notify-send "M4 key!"
 # XF86Launch3 = AURA "asus" key
-bindsym XF86Launch3 exec --no-startup-id i3-input -P 'Keyboard color (hex): ' -F 'exec asusctl aura static -c "%s"'
+bindsym XF86Launch3 exec --no-startup-id i3-input -P 'Keyboard color (hex-color|off|on): ' -F 'exec ([[ %s == off ]] && asusctl aura-power keyboard -s) || ([[ %s == on ]] && asusctl aura-power keyboard -a) || asusctl aura-power keyboard -a && asusctl aura static -c %s'
 bindsym XF86KbdBrightnessDown exec --no-startup-id asusctl --prev-kbd-bright
 bindsym XF86KbdBrightnessUp exec --no-startup-id asusctl --next-kbd-bright
 
@@ -251,12 +255,6 @@ mode "resize" {
         bindsym k resize shrink height 10 px or 10 ppt
         bindsym l resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
         # back to normal: Enter or Escape or $super+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -265,6 +263,31 @@ mode "resize" {
 
 bindsym $super+r mode "resize"
 
+mode "power" {
+    # back to normal: Enter or Escape or $super+Ctrl+e
+    bindsym Return mode "default" ; exec --no-startup-id "tint-screen.sh off"
+    bindsym Escape mode "default" ; exec --no-startup-id "tint-screen.sh off"
+
+    # logout
+    bindsym l exit
+    # suspend
+    bindsym s exec --no-startup-id systemctl suspend
+    # shutdown
+    bindsym p exec --no-startup-id systemctl shutdown
+    # reboot
+    bindsym r exec --no-startup-id systemctl reboot
+}
+
+# bindsym $super+e mode "power", exec --no-startup-id bash -c 'pid=$(power-menu.sh) &&  sleep 2 && i3-msg mode default && kill -9 $pid'
+# bindsym $super+e mode "power", exec --no-startup-id bash -c 'pid=$(power-menu.sh) && sleep 1 && i3-msg focus parent && sleep 2 && i3-msg mode default && kill -9 $pid'
+bindsym $super+e mode "power", exec --no-startup-id bash -c 'tint-screen.sh && sleep 1 && i3-msg mode default && tint-screen.sh off'
+#; exec tint-screen.sh && (sleep 7 && tint-screen.sh off) &
+# && i3-nagbar -f "pango:Terminus 12" \
+# -m "Exit i3? This will end your current X session." \
+# -B "Exit now" "i3-msg exit" \
+# -B "Suspend" "systemctl suspend && pkill i3-nagbar" \
+# -B "Reboot" "systemctl reboot" \
+# -B "Power off" "systemctl poweroff" 
 
 ###################################################################################################
                                             # Theming #
@@ -290,7 +313,7 @@ client.background       #FFFFFF
 bar {
   position top
 
-  workspace_min_width 100
+  # workspace_min_width 100
 
   colors {
     background #000000
