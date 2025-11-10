@@ -50,13 +50,16 @@
     - name: Install Rustup
       ansible.builtin.shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       args:
-        creates: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+        creates: "/home/matt/.cargo/bin/cargo"
+      become_user: matt
 
     # cargo path should already be in .bashrc
     - name: Install cargo packages
       community.general.cargo:
         name: "{{ cargo_package_list }}"
         state: present
-        executable:  "{{ ansible_env.HOME }}/.cargo/bin/cargo"
-        path: /usr/local
+        executable:  "/home/matt/.cargo/bin/cargo"
+        # ./bin is implicitly appended to path
+        path: /home/matt/
+      become_user: matt
 ...
