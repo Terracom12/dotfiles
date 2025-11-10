@@ -32,6 +32,7 @@ sshpass
 lsof
 htop
 gnupg
+tmux
 
 fastfetch
 
