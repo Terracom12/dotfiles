@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -eu  # Strict mode
+
+# If code is not installed / the CLI is unavailable -> exit
+type code &> /dev/null || exit 1
+
+# Define ANSI escape color codes
+yellow='\033[0;33m'
+nc='\033[0m' # No Color
+
+current_extensions="$(code --list-extensions --show-versions)"
+
+old_extensions="
+{{- range .code_extensions -}}
+{{ . }}\n
+{{- end -}}
+"
+
+# Suppress input unique to current and extensions that are the same
+# Use xargs to trim excess whitespace
+to_install="$(comm -23 <(echo -e ${old_extensions} | sort) <(code --list-extensions --show-versions | sort) | xargs)"
+
+if [[ -z "${to_install}" ]]; then
+    exit 0
+fi
+
+# Installs all of the extensions not already present
+# found in .chezmoidata/code-extensions.yml
+
+echo -e "${yellow}Installing VS Code extensions:"
+echo "${to_install}"
+echo -e "${nc}"
+
+# Use xargs to trim excess whitespace
+for ext in ${to_install}; do
+    code --install-extension "${ext}"
+done

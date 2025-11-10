@@ -18,8 +18,14 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --ssh $GITHUB_USERNAME
 
 ## To-Do
 
+- [ ] Phase-out Ansible usage. Chezmoi's docs supply a nice declarative alternative for pkg installation
 - [ ] Add to package list
-    - tmux
     - batcat
+    - nala
+    - chezmoi
+    - Web browser
+    - Password manager
+    - Discord
 - [ ] More idempotent ROS 2 install
+- [ ] Add colcon_cd to ROS 2
 - [ ] Fix issue with alacritty opacity

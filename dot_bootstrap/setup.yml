@@ -19,6 +19,7 @@
           - make
           - cmake
           - vim
+          - tmux
           - htop
           - gh
           - gnome-tweaks
@@ -125,6 +126,12 @@
   gather_facts: true
 
   tasks:
+    - name: Install tpm (tmux plugin manager)
+      ansible.builtin.git:
+        repo: "git@github.com:tmux-plugins/tpm.git"
+        version: "v3.1.0"
+        dest: ~{{ ansible_user_id }}/.config/tmux/plugins/tpm
+
     - name: Install rustup and cargo
       ansible.builtin.shell:
         cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -173,6 +180,7 @@
       ansible.builtin.unarchive:
         src: https://github.com/jesseduffield/lazygit/releases/download/v0.44.1/lazygit_0.44.1_Linux_x86_64.tar.gz
         dest: ~{{ ansible_user_id }}/.local/bin
+        exclude: ["LICENSE", "README.md"]
         remote_src: true
 
     - name: Install superfile

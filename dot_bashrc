@@ -8,9 +8,11 @@
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+*i*) ;;
+*) return ;;
 esac
+
+# FIXME: Path is fucked up with lots of duplicate entries
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -22,6 +24,17 @@ shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
+
+# Immediately append commands to the history file without waiting for the shell session to end
+# Also reread (-n) all NEW history (i.e., from other shell sessions)
+reeval_history() {
+    # Mildly annoying issue that if the same command is run in 2+ tty's in sequence,
+    # then it will be appended to history multiple times
+    # It seems that the HISTCONTROL checks are done before DEBUG traps
+    history -n
+}
+trap 'reeval_history' DEBUG
+PROMPT_COMMAND='history -a;'"$PROMPT_COMMAND"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -60,6 +73,8 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# TODO: A prompt for RHEL-esque distros
+
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
@@ -72,8 +87,7 @@ case "$TERM" in
 xterm* | rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
-*)
-    ;;
+*) ;;
 esac
 
 # enable color support of ls and also add handy aliases
@@ -90,7 +104,6 @@ fi
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -115,19 +128,44 @@ if ! shopt -oq posix; then
         . /etc/bash_completion
     fi
 fi
-source /opt/ros/humble/setup.bash
 
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/bin:$PATH"
-export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$HOME/Installs/scripts"
-export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux"
-. "$HOME/.cargo/env"
+# TODO: Disable installation of anything ros-related by default
 
-eval "$(gh completion -s bash)"
-eval "$(starship init bash)"
-eval "$(zoxide init bash)"
-eval "$(fzf --bash)"
+if [[ -f /opt/ros/humble/setup.bash ]]; then
+    source /opt/ros/humble/setup.bash
+fi
+
+function tm() {
+    local name="$1"
+
+    tmux new-session -s "$name" -d
+}
+
+if command -v gh &>/dev/null; then
+    eval "$(gh completion -s bash)"
+fi
+if command -v starship &>/dev/null; then
+    eval "$(starship init bash)"
+fi
+if command -v zoxide &>/dev/null; then
+    eval "$(zoxide init bash --cmd cd)"
+fi
+if command -v fzf &>/dev/null; then
+    # Disable <C-t> binding; using it to fuzzy find tmux sessions
+    FZF_CTRL_T_COMMAND='' eval "$(fzf --bash)"
+
+    TMUX_SESSION_WIZARD_PATH="$HOME/.config/tmux/plugins/tmux-session-wizard/bin"
+    if [[ -d $TMUX_SESSION_WIZARD_PATH ]]; then
+        export PATH="$TMUX_SESSION_WIZARD_PATH:$PATH"
+
+        if [[ -x "$TMUX_SESSION_WIZARD_PATH/t" ]]; then
+            bind -x "\"\C-t\":\"$TMUX_SESSION_WIZARD_PATH/t\""
+        fi
+    fi
+fi
+if command -v direnv &>/dev/null; then
+    eval "$(direnv hook bash)"
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
@@ -135,17 +173,6 @@ export NVM_DIR="$HOME/.nvm"
 
 export MYPYPATH="/opt/ros/humble/lib/python3.10/site-packages/"
 
-
-# pnpm
-export PNPM_HOME="/home/matt/.local/share/pnpm"
-case ":$PATH:" in
-*":$PNPM_HOME:"*) ;;
-*) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-#
-export RCUTILS_COLORIZED_OUTPUT=1
-export EDITOR=nvim
 export DISABLE_AUTO_TITLE=true
 alias sshorin="ssh -t orin@ubuntu.local 'source ~/.profile && cd /home/orin/ros2_ws && source install/setup.bash && bash --login'"
 

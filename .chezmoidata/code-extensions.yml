@@ -1,0 +1,38 @@
+---
+code_extensions:
+  - aaron-bond.better-comments@3.0.2
+  - adpyke.codesnap@1.3.4
+  - althack.ament-task-provider@0.3.0
+  - catppuccin.catppuccin-vsc@3.16.0
+  - charliermarsh.ruff@2024.56.0
+  - detachhead.basedpyright@1.23.1
+  - dotjoshjohnson.xml@2.5.1
+  - harikrishnan94.cxx-compiler-explorer@0.7.4
+  - jeff-hykin.better-cpp-syntax@1.27.1
+  - kevinrose.vsc-python-indent@1.19.0
+  - llvm-vs-code-extensions.vscode-clangd@0.1.33
+  - ms-azuretools.vscode-docker@1.29.3
+  - ms-python.autopep8@2024.0.0
+  - ms-python.debugpy@2024.14.0
+  - ms-python.isort@2023.10.1
+  - ms-python.python@2024.22.1
+  - ms-vscode-remote.remote-containers@0.394.0
+  - ms-vscode.cmake-tools@1.19.52
+  - ms-vscode.cpptools@1.22.11
+  - ms-vscode.cpptools-extension-pack@1.3.0
+  - ms-vscode.vscode-serial-monitor@0.13.1
+  - ms-vsliveshare.vsliveshare@1.0.5941
+  - njpwerner.autodocstring@0.6.1
+  - nonanonno.vscode-ros2@0.1.5
+  - platformio.platformio-ide@3.3.3
+  - redhat.vscode-yaml@1.15.0
+  - smilerobotics.urdf@0.3.0
+  - streetsidesoftware.code-spell-checker@4.0.21
+  - tamasfe.even-better-toml@0.21.2
+  - twxs.cmake@0.0.17
+  - usernamehw.errorlens@3.22.0
+  - vscodevim.vim@1.29.0
+  - vue.volar@2.2.0
+  - wayou.vscode-todo-highlight@1.0.5
+  - yzhang.markdown-all-in-one@3.6.2
+...

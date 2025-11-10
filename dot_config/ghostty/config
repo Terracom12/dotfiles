@@ -1,0 +1,19 @@
+# Use JetBrainsMono Nerd Font
+# https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.zip
+font-family = JetBrainsMono Nerd Font
+# Disable ligatures
+font-feature = -calt
+
+# Font size in pts
+font-size = 16
+
+cursor-style = bar
+
+# *Preference* for window deco; OS / DE / window manager may override this
+# (works on Fedora + i3)
+window-decoration = none
+
+background-opacity = 0.8
+
+command = /bin/bash -c "~/.config/tmux/plugins/tmux-session-wizard/bin/t && bash -i"
+

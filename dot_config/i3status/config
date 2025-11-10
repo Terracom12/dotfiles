@@ -1,0 +1,69 @@
+# i3status configuration file.
+# see "man i3status" for documentation.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+# TODO: Laptop battery has gone to shit?
+
+general {
+        colors = true
+        interval = 5
+        markup = "pango"
+}
+
+order += "wireless _first_"
+# order += "ethernet _first_"
+order += "battery all"
+# order += "disk /"
+order += "load"
+order += "memory"
+order += "volume master"
+order += "tztime local"
+
+wireless _first_ {
+        format_up = "WIFI (%quality at %essid)"
+        format_down = "WIFI down"
+}
+
+ethernet _first_ {
+        format_up = "ETH %ip (%speed)"
+        format_down = "ETH down"
+}
+
+battery all {
+        format = "%status %percentage (%remaining)"
+        format_down = "No battery"
+        status_chr = "CHR"
+        status_bat = "BAT"
+        status_unk = "? UNK"
+        status_full = "FULL"
+        status_idle = "IDLE"
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 15
+        threshold_type = time
+}
+
+volume master {
+        format = "VOL %volume"
+        format_muted = "VOL MUTED (%volume)"
+        device = "pulse"
+}
+
+load {
+        format = "LOAD %1min"
+        max_threshold = "4.0"
+}
+
+memory {
+        format = "MEM %percentage_used"
+        threshold_degraded = "15%"
+        threshold_critical = "5%"
+}
+
+tztime local {
+        # extra space to seperate from tray output
+        format = "%b %d %H:%M "
+}

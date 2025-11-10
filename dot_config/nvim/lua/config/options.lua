@@ -10,6 +10,4 @@ vim.o.shiftwidth = 4 -- Number of spaces inserted when indenting
 
 vim.g.trouble_lualine = false
 
-vim.g.autoformat = false -- disable autoformat
-
-vim.g.vimtex_view_method = 'zathura'
+vim.g.autoformat = true -- disable autoformat

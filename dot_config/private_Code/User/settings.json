@@ -1,0 +1,77 @@
+{
+    "workbench.startupEditor": "none",
+    "python.testing.unittestEnabled": true,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.autoFormatStrings": true,
+    "files.autoSave": "afterDelay",
+    "editor.minimap.enabled": false,
+    "cmake.configureOnOpen": false,
+    "cmake.showOptionsMovedNotification": false,
+    "mypy-type-checker.args": [
+        "--install-types",
+        "--non-interactive",
+        "--ignore-missing-imports"
+    ],
+    "mypy-type-checker.preferDaemon": true,
+    "mypy-type-checker.importStrategy": "fromEnvironment",
+    "window.menuBarVisibility": "compact",
+    "git.autofetch": true,
+    "editor.rulers": [
+        120
+    ],
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "arduino.logLevel": "verbose",
+    "arduino.useArduinoCli": true,
+    "explorer.confirmDelete": false,
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.formatOnSave": true,
+        "editor.wordBasedSuggestions": "off",
+    },
+    "editor.formatOnSave": true,
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "clangd.enableCodeCompletion": true,
+    "explorer.confirmDragAndDrop": false,
+    "pylint.lintOnChange": true,
+    "clangd.path": "clangd-18",
+    "redhat.telemetry.enabled": false,
+    "python.createEnvironment.trigger": "off",
+    "flake8.args": [
+        "--max-line-length=100"
+    ],
+    "files.trimTrailingWhitespace": true,
+    "git.openRepositoryInParentFolders": "always",
+    "gitlens.advanced.messages": {
+        "suppressCommitHasNoPreviousCommitWarning": true
+    },
+    "editor.inlayHints.enabled": "on",
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+    ],
+    "cSpell.userWords": [
+        "aruco",
+        "odometry",
+        "republisher",
+        "rosbag"
+    ],
+    "extensions.autoUpdate": false,
+    "vim.insertModeKeyBindings": [],
+    "vim.useSystemClipboard": true,
+    "vim.handleKeys": {
+        "<C-s>": false,
+        "<C-w>": false,
+        "<C-p>": false,
+        "<C-b>": false,
+        "<C-j>": false,
+        "<C-k>": false,
+    },
+    "basedpyright.analysis.diagnosticMode": "workspace",
+    "basedpyright.analysis.typeCheckingMode": "standard",
+    "editor.lineNumbers": "relative",
+    "vim.smartRelativeLine": true,
+    "cSpell.enabled": false,
+    "search.followSymlinks": false,
+}
