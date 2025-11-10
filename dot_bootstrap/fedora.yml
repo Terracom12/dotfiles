@@ -5,7 +5,8 @@
   connection: local
   gather_facts: true
   vars:
-    dnf_package_list: "{{ lookup('file', 'dnf-packages.txt').splitlines() | select('match', '^[^#]') | list }}"
+    dnf_package_list: "{{ lookup('file', 'lists/fedora/dnf.txt').splitlines() | select('match', '^[^#]') | list }}"
+    copr_repo_list: "{{ lookup('file', 'lists/fedora/copr.txt').splitlines() | select('match', '^[^#]') | list }}"
 
   tasks:
     - name: Get my user
@@ -13,7 +14,18 @@
         # what does this do again?
         remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
 
-    - name: Install packages from list
+    - name: Add Brave Browser Repo
+      ansible.builtin.get_url:
+        url: https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+        dest: /etc/yum.repos.d/brave-browser.repo
+
+    - name: Enable copr repos
+      community.general.copr:
+        name: "{{ item }}"
+        state: enabled
+      loop: "{{ copr_repo_list }}"
+
+    - name: Install dnf packages from list
       ansible.builtin.dnf:
         name: "{{ dnf_package_list }}"
         state: present
