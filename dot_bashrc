@@ -25,6 +25,17 @@ shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
 
+# Immediately append commands to the history file without waiting for the shell session to end
+# Also reread (-n) all NEW history (i.e., from other shell sessions)
+reeval_history() {
+    # Mildly annoying issue that if the same command is run in 2+ tty's in sequence,
+    # then it will be appended to history multiple times
+    # It seems that the HISTCONTROL checks are done before DEBUG traps
+    history -n
+}
+trap 'reeval_history' DEBUG
+PROMPT_COMMAND='history -a;'"$PROMPT_COMMAND"
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
