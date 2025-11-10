@@ -15,11 +15,10 @@ fi
 
 name="$(git config user.name)"
 echo "'$name' is your name from git"
-read -rp "If this is correct, press enter; otherwise type your full name: "
-if [[ -n $REPLY ]]; then
-    name="$REPLY"
-    echo "New name is '$name'"
-fi
+email="$(git config user.email)"
+echo "'$email' is your email from git"
+read -rp "Comment for key: "
+comment="$REPLY"
 
 expires=4m
 read -rp "Key should expire in [default $expires] "
@@ -30,10 +29,10 @@ fi
 
 echo "Running: "
 cat <<EOF
-gpg --quick-generate-key "$name" rsa4096 sign "$expires"
+gpg --quick-generate-key "$name ($comment) <$email>" rsa4096 sign "$expires"
 EOF
 
-gpg --quick-generate-key "$name" rsa4096 sign "$expires"
+gpg --quick-generate-key "$name ($comment) <$email>" rsa4096 sign "$expires"
 
 fingerprints="$(gpg --list-keys --with-colons | grep fpr)"
 nf=$(wc -l <<<"$fingerprints")
