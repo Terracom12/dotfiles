@@ -1,0 +1,83 @@
+# Basic package list for a generic Fedora install (DM agnostic)
+# Only for *user-level* (NOT SYSTEM) packages
+# Obtained via: dnf repoquery --userinstalled --qf '%{name}'$'\n'
+
+##### LAPTOP ONLY
+# asusctl
+# acpi
+# supergfxctl
+
+##### Applications
+firefox
+brave-browser
+chromium
+keepassxc
+syncthing
+ghostty
+neovim
+lazygit
+
+##### Primitive CLI Tools
+bc
+zip
+unzip
+tar
+curl
+less
+patch
+strace
+ftp
+git
+sshpass
+lsof
+htop
+
+fastfetch
+
+zoxide
+gh
+fd-find
+bat
+ripgrep
+difftastic
+yq
+xq
+jq
+fzf
+direnv
+
+xsel
+xclip
+xev
+
+diffpdf
+dos2unix
+net-tools
+nmap
+nmap-ncat
+
+powershell
+
+
+##### DEVELOPMENT
+ccache
+clang
+gcc-c++
+clang-analyzer
+clang-tools-extra
+gdb
+cmake
+compiler-rt
+cppcheck
+libasan
+ninja-build
+doxygen
+java-latest-openjdk
+
+##### OTHER
+docker-ce
+docker-ce-cli
+docker-buildx-plugin
+docker-compose-plugin
+ansible
+earlyoom

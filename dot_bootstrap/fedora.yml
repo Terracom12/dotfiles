@@ -1,0 +1,20 @@
+---
+- name: Fedora Setup
+  hosts: localhost
+  become: true
+  connection: local
+  gather_facts: true
+  vars:
+    dnf_package_list: "{{ lookup('file', 'dnf-packages.txt').splitlines() | select('match', '^[^#]') | list }}"
+
+  tasks:
+    - name: Get my user
+      ansible.builtin.set_fact:
+        # what does this do again?
+        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+
+    - name: Install packages from list
+      ansible.builtin.dnf:
+        name: "{{ dnf_package_list }}"
+        state: present
+...

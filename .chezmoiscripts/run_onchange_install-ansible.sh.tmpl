@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Credit to github.com/logandonley for this script
 # https://github.com/logandonley/dotfiles/blob/main/run_once_install_ansible.sh
@@ -19,6 +19,10 @@ install_on_ubuntu() {
     sudo apt-get install -qq --no-install-recommends ansible
 }
 
+install_on_fedora() {
+    sudo dnf install -y -q ansible
+}
+
 OS="$(uname -s)"
 case "${OS}" in
     Linux*)
@@ -26,6 +30,12 @@ case "${OS}" in
             if ! ansible --version >& /dev/null; then
                 echo -e "${yellow}Installing ansible${nc}"
                 install_on_ubuntu
+                echo -e "${green}Ansible installation complete${nc}"
+            fi
+        elif [ -f /etc/fedora-release ]; then
+            if ! ansible --version >& /dev/null; then
+                echo -e "${yellow}Installing ansible${nc}"
+                install_on_fedora
                 echo -e "${green}Ansible installation complete${nc}"
             fi
         else
@@ -46,8 +56,8 @@ fi
 
 # Use strategy of hashing in template to re-run script from:
 # https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/#run-a-script-when-the-contents-of-another-file-changes
-# Playbook hash: {{ include "dot_bootstrap/setup.yml" | sha256sum }}
+# Playbook hashes: {{ include "dot_bootstrap/setup.yml" | sha256sum }} {{ include "dot_bootstrap/fedora.yml" | sha256sum }} {{ include "dot_bootstrap/debian.yml" | sha256sum }}
 
 echo -e "${yellow}Ansible playbook at '${playbook_path}' changed. Running ansible...${nc}"
 
-ansible-playbook ~/.bootstrap/setup.yml --ask-become-pass -v
+ANSIBLE_DISPLAY_SKIPPED_HOSTS=false ansible-playbook ~/.bootstrap/setup.yml --ask-become-pass -v
