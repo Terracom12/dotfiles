@@ -9,7 +9,7 @@ return {
                 -- show_buffer_close_icons = false,
                 -- buffer_close_icon = '',
                 -- close_icon = ''
-            }
+            },
         },
     },
 
@@ -20,6 +20,18 @@ return {
         "folke/snacks.nvim",
         opts = {
             lazygit = {},
+            picker = {
+                ignored = true,
+                hidden = true,
+                sources = {
+                    files = {
+                        -- Do not hide gitignored files by default
+                        ignored = true,
+                        hidden = true,
+                    },
+                    explorer = {},
+                },
+            },
         },
-    }
+    },
 }
