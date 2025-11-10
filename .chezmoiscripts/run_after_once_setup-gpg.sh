@@ -40,6 +40,13 @@ if ! [[ $REPLY =~ [Yy] ]]; then
     exit
 fi
 
+read -rp "Title for the key: "
+title="$REPLY"
+if ! [[ -n $REPLY ]]; then
+    >&2 echo 'Must give a title!'
+    exit 1
+fi
+
 fingerprints="$(gpg --list-keys --with-colons | grep fpr)"
 nf=$(wc -l <<<"$fingerprints")
 if [[ $nf -gt 1 ]]; then
@@ -59,7 +66,7 @@ echo "Temporary file for storing key: $tk"
 
 gpg --export --output "$tk" --armor "$fp"
 
-gh gpg-key add "$tk"
+gh gpg-key add "$tk" --title "$title"
 echo "Successfully added key!"
 echo "Removing temporary key file"
 rm -f "$tk"
