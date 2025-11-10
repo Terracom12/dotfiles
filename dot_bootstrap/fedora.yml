@@ -44,4 +44,5 @@
       community.general.flatpak:
         name: "{{ flatpak_package_list }}"
         state: present
+        method: system
 ...

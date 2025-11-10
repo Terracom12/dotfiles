@@ -1,2 +1,2 @@
-Discord
-Spotify
+com.discordapp.Discord
+com.spotify.Client
