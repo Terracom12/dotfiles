@@ -6,7 +6,9 @@
   gather_facts: true
   vars:
     dnf_package_list: "{{ lookup('file', 'lists/fedora/dnf.txt').splitlines() | select('match', '^[^#]') | list }}"
+    flatpak_package_list: "{{ lookup('file', 'lists/fedora/flatpak.txt').splitlines() | select('match', '^[^#]') | list }}"
     copr_repo_list: "{{ lookup('file', 'lists/fedora/copr.txt').splitlines() | select('match', '^[^#]') | list }}"
+    yum_repo_list: "{{ lookup('file', 'lists/fedora/yum-repos.txt').splitlines() | select('match', '^[^#]') | list }}"
 
   tasks:
     - name: Get my user
@@ -14,10 +16,11 @@
         # what does this do again?
         remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
 
-    - name: Add Brave Browser Repo
+    - name: Add yum repo files
       ansible.builtin.get_url:
-        url: https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-        dest: /etc/yum.repos.d/brave-browser.repo
+        url: "{{ item }}"
+        dest: /etc/yum.repos.d/
+      loop: "{{ yum_repo_list }}"
 
     - name: Enable copr repos
       community.general.copr:
@@ -25,8 +28,13 @@
         state: enabled
       loop: "{{ copr_repo_list }}"
 
-    - name: Install dnf packages from list
+    - name: Install dnf packages
       ansible.builtin.dnf:
         name: "{{ dnf_package_list }}"
+        state: present
+
+    - name: Install flatpak packages
+      community.general.flatpak:
+        name: "{{ flatpak_package_list }}"
         state: present
 ...
