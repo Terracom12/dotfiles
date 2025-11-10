@@ -48,4 +48,6 @@ elif [[ $nf -eq 0 ]]; then
     exit 1
 fi
 
+fp="$(awk -F: '{ print $10 }' <<<"$fingerprints")"
+
 gpg --export --armor "$fp"
