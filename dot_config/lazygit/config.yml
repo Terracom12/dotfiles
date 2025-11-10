@@ -1,0 +1,4 @@
+customCommands:
+  - key: '<c-p>'
+    context: 'global'
+    command: 'git push --no-verify || git push --no-verify --set-upstream {{.CheckedOutBranch.Name}}'
