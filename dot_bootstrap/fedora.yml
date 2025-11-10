@@ -7,6 +7,7 @@
   vars:
     dnf_package_list: "{{ lookup('file', 'lists/fedora/dnf.txt').splitlines() | select('match', '^[^#]') | list }}"
     flatpak_package_list: "{{ lookup('file', 'lists/fedora/flatpak.txt').splitlines() | select('match', '^[^#]') | list }}"
+    cargo_package_list: "{{ lookup('file', 'lists/cargo.txt').splitlines() | select('match', '^[^#]') | list }}"
     copr_repo_list: "{{ lookup('file', 'lists/fedora/copr.txt').splitlines() | select('match', '^[^#]') | list }}"
     yum_repo_list: "{{ lookup('file', 'lists/fedora/yum-repos.txt').splitlines() | select('match', '^[^#]') | list }}"
 
@@ -45,4 +46,16 @@
         name: "{{ flatpak_package_list }}"
         state: present
         method: system
+
+    - name: Install Rustup
+      ansible.builtin.shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      args:
+        creates: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+
+    # cargo path should already be in .bashrc
+    - name: Install cargo packages
+      community.general.cargo:
+        name: "{{ cargo_package_list }}"
+        state: present
+        executable:  "{{ ansible_env.HOME }}/.cargo/bin/cargo"
 ...
