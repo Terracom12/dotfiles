@@ -166,3 +166,11 @@ kb-cancel: "Escape,Control+g,Control+bracketleft,Control+c";
       sorting-method:    "name";
   }
 }
+
+@theme "squared-nord"
+
+
+// Make the window wider
+window {
+    width: 1000;
+}
