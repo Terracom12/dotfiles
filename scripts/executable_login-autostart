@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+#
+# Script that is run when my user session starts
+# Just starts up my tmux session for now
+#
+
+tmux start-server \; set -g exit-empty off

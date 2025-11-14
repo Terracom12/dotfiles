@@ -159,6 +159,9 @@ fi
 if command -v direnv &>/dev/null; then
     eval "$(direnv hook bash)"
 fi
+if command -v ghostty &>/dev/null; then
+    bind -x "\"\C-Y\":\"$HOME/scripts/toggle-ghostty-opacity\""
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm

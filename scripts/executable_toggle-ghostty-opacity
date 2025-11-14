@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+config_file="$HOME/.config/ghostty/config"
+
+sed -iE '
+/^\s*background-opacity/ { 
+    s/^/# / ; b 
+}
+/^\s*#\s*background-opacity/ { 
+    s/^\s*#\s*// ; b
+}' "$config_file"
+
+echo -ne '\r\e[03mGhostty Transparency '
+
+if grep -E '^\s*background-opacity' "$config_file" &>/dev/null; then
+    echo ON
+else
+    echo OFF
+fi
+
+echo -en '\e[0m'
+
+# YAY! (thought it wouldn't be possible, or easy)
+pkill -SIGUSR2 ghostty
