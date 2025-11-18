@@ -263,7 +263,8 @@ mode "resize" {
 
 bindsym $super+r mode "resize"
 
-mode "power" {
+set $powermode "power [<l> logout] [<s> suspend] [<p> shutdown] [<r> reboot]"
+mode $powermode {
     # back to normal: Enter or Escape or $super+Ctrl+e
     bindsym Return mode "default" ; exec --no-startup-id "tint-screen.sh off"
     bindsym Escape mode "default" ; exec --no-startup-id "tint-screen.sh off"
@@ -280,7 +281,7 @@ mode "power" {
 
 # bindsym $super+e mode "power", exec --no-startup-id bash -c 'pid=$(power-menu.sh) &&  sleep 2 && i3-msg mode default && kill -9 $pid'
 # bindsym $super+e mode "power", exec --no-startup-id bash -c 'pid=$(power-menu.sh) && sleep 1 && i3-msg focus parent && sleep 2 && i3-msg mode default && kill -9 $pid'
-bindsym $super+e mode "power", exec --no-startup-id bash -c 'tint-screen.sh && sleep 1 && i3-msg mode default && tint-screen.sh off'
+bindsym $super+e mode $powermode, exec --no-startup-id bash -c 'tint-screen.sh && sleep 2 && i3-msg mode default && tint-screen.sh off'
 #; exec tint-screen.sh && (sleep 7 && tint-screen.sh off) &
 # && i3-nagbar -f "pango:Terminus 12" \
 # -m "Exit i3? This will end your current X session." \
